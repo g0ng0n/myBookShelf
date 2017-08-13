@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-class BookShelf extends Component {
+class BookShelfSearch extends Component {
 
     static PropTypes = {
         books: PropTypes.array.isRequired,
-        shelf: PropTypes.string.isRequired,
-        shelfTitle: PropTypes.string.isRequired
     };
 
     state = {
@@ -18,13 +16,14 @@ class BookShelf extends Component {
     }
 
     render() {
-        const { books, shelf, shelfTitle } = this.props;
+
+        const { books} = this.props;
+
         return (
-            <div className="bookshelf">
-                <h2 className="bookshelf-title">{shelfTitle}</h2>
+            <div className="search-books-results">
                 <div className="bookshelf-books">
                     <ol className='books-grid'>
-                        {books.filter(book => book.shelf === shelf).map((book) => (
+                        {books.map((book) => (
                             <li key={book.id} >
                                 <div className='book'>
                                     <div className="book-top">
@@ -51,4 +50,4 @@ class BookShelf extends Component {
         );
     }
 }
-export default BookShelf
+export default BookShelfSearch

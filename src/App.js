@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-
-import logo from './logo.svg';
 import BookShelf from './BookShelf'
 import SearchBooks from './SearchBooks'
 import './App.css';
@@ -33,6 +31,7 @@ class App extends Component {
             <div className="app">
                 <Route path='/search'  render={( {history} ) => (
                     <SearchBooks
+                        books={this.state.books}
                     />
                 )}
                 />

@@ -1,41 +1,27 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import escapeRegExp from 'escape-string-regexp'
-
-import BookShelf from './BookShelf'
+import * as BooksAPI from './APIs/BooksAPI'
+import BookShelfSearch from './BookShelfSearch'
 
 class SearchBooks extends Component {
 
-    static PropTypes = {
-        books: PropTypes.array.isRequired,
-        shelf: PropTypes.string.isRequired,
-        shelfTitle: PropTypes.string.isRequired
-    };
-
     state = {
-        query: ''
+        query: '',
+        books: []
     };
 
     updateQuery = (query) => {
-        BooksAPI.getAll().then((books) => {
-            this.setState({books : books})
+        BooksAPI.search(query,20).then((books) => {
+            if(books !== undefined && books.length > 0){
+                this.setState({books : books})
+            }
         });
     };
 
     render() {
-        const { books, shelf, query, shelfTitle } = this.props;
+        const {books } = this.state;
 
-        let showingBooks;
-        if (query){
-            const match = new RegExp(escapeRegExp(query), 'i');
-            showingBooks = books.filter((book) => match.test(book.name))
-
-        }else{
-            showingBooks = books
-        }
-
-        return (
+       return (
 
             <div className="search-books">
 
@@ -52,18 +38,16 @@ class SearchBooks extends Component {
                          However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                          you don't find a specific author or title. Every search is limited by search terms.
                          */}
-                        <input type="text" placeholder="Search by title or author"
-                               value={this.state.query}
+                        <input type="text"
+                               placeholder="Search by title or author"
                                onChange={(event) => this.updateQuery(event.target.value)}
                         />
                     </div>
                 </div>
                 <div className="search-books-results">
-                    <BookShelf
-                        books={showingBooks}
-                        shelfTitle={""}
-                        shelf={""}>
-                    </BookShelf>
+                    <BookShelfSearch
+                        books={books}>
+                    </BookShelfSearch>
                 </div>
             </div>
 
