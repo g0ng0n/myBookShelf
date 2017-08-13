@@ -1,25 +1,20 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import * as BooksAPI from './APIs/BooksAPI'
+import PropTypes from 'prop-types'
 import BookShelfSearch from './BookShelfSearch'
 
 class SearchBooks extends Component {
 
-    state = {
-        query: '',
-        books: []
+    static PropTypes = {
+        books: PropTypes.array.isRequired,
+        searchInBookShelf: PropTypes.func.isRequired,
+        updateBookShelf: PropTypes.func.isRequired
+
     };
 
-    updateQuery = (query) => {
-        BooksAPI.search(query,20).then((books) => {
-            if(books !== undefined && books.length > 0){
-                this.setState({books : books})
-            }
-        });
-    };
 
     render() {
-        const {books } = this.state;
+        const {books, searchInBookShelf, updateBookShelf } = this.props;
 
        return (
 
@@ -40,13 +35,19 @@ class SearchBooks extends Component {
                          */}
                         <input type="text"
                                placeholder="Search by title or author"
-                               onChange={(event) => this.updateQuery(event.target.value)}
+                               onChange={(event) => {
+                                   let query =  event.target.value !== undefined ? event.target.value : " ";
+                                   searchInBookShelf(query)
+                               }}
                         />
                     </div>
                 </div>
                 <div className="search-books-results">
                     <BookShelfSearch
-                        books={books}>
+                        books={books}
+                        updateBookShelf={(book,shelf) =>{
+                            updateBookShelf(book,shelf);
+                        }}>
                     </BookShelfSearch>
                 </div>
             </div>

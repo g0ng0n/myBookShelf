@@ -9,29 +9,50 @@ import * as BooksAPI from './APIs/BooksAPI'
 
 class App extends Component {
     state = {
-        /**
-         * TODO: Instead of using this state variable to keep track of which page
-         * we're on, use the URL in the browser's address bar. This will ensure that
-         * users can use the browser's back and forward buttons to navigate between
-         * pages, as well as provide a good URL they can bookmark and share.
-         */
-        showSearchPage: true,
         books : []
     };
 
     componentDidMount() {
+
         BooksAPI.getAll().then((books) => {
-            this.setState({books : books});
+            if(books !== undefined && books.length > 0){
+                this.setState({books : books})
+            }
         });
 
     }
 
+    searchInBookShelf(query) {
+            BooksAPI.search(query,20).then((books) => {
+                if(books !== undefined && books.length > 0){
+                    this.setState({books : books})
+                }
+            });
+    }
+
+    updateBookShelf(book, shelf) {
+        BooksAPI.update(book, shelf).then((books) => {
+            BooksAPI.getAll().then((books) => {
+                if(books !== undefined && books.length > 0){
+                    this.setState({books : books})
+                }
+            });
+        });
+
+    }
     render() {
         return (
             <div className="app">
                 <Route path='/search'  render={( {history} ) => (
                     <SearchBooks
                         books={this.state.books}
+                        searchInBookShelf={(query) => {
+                            this.searchInBookShelf(query);
+                        }}
+                        updateBookShelf={(book,shelf) =>{
+                            this.updateBookShelf(book,shelf);
+                        }}
+
                     />
                 )}
                 />
@@ -43,17 +64,26 @@ class App extends Component {
                         <BookShelf
                             books={this.state.books}
                             shelfTitle={"Currently Reading"}
-                            shelf={"currentlyReading"}>
+                            shelf={"currentlyReading"}
+                            updateBookShelf={(book,shelf) =>{
+                                this.updateBookShelf(book,shelf);
+                            }}>
                         </BookShelf>
                         <BookShelf
                             books={this.state.books}
                             shelfTitle={"Want To Read"}
-                            shelf={"wantToRead"}>
+                            shelf={"wantToRead"}
+                            updateBookShelf={(book,shelf) =>{
+                                this.updateBookShelf(book,shelf);
+                            }}>
                         </BookShelf>
                         <BookShelf
                             books={this.state.books}
                             shelfTitle={"Read"}
-                            shelf={"read"}>
+                            shelf={"read"}
+                            updateBookShelf={(book,shelf) =>{
+                                this.updateBookShelf(book,shelf);
+                            }}>
                         </BookShelf>
                         <div className="open-search">
                             <Link className="close-search" to="/search">
