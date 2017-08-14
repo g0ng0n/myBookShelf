@@ -1,38 +1,34 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
-import Book from './Book'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Book from './Book';
 
 class BookShelfSearch extends Component {
+  static PropTypes = {
+    books: PropTypes.array.isRequired,
+    updateBookShelf: PropTypes.func.isRequired,
+  };
 
-    static PropTypes = {
-        books: PropTypes.array.isRequired,
-        updateBookShelf: PropTypes.func.isRequired
+  render() {
+    const { books, updateBookShelf } = this.props;
 
-    };
-
-    render() {
-
-        const {books, updateBookShelf} = this.props;
-
-        return (
-            <div className="search-books-results">
-                <div className="bookshelf-books">
-                    <ol className='books-grid'>
-                        {books.map((book) => (
-                            <li key={book.id}>
-                                <Book
-                                    book={book}
-                                    updateBookShelf={(book, shelf) => {
-                                        updateBookShelf(book, shelf);
-                                    }}
-                                />
-                            </li>
-                        ))}
-                    </ol>
-                </div>
-            </div>
-
-        );
-    }
+    return (
+      <div className="search-books-results">
+        <div className="bookshelf-books">
+          <ol className="books-grid">
+            {books.map(book =>
+              <li key={book.id}>
+                <Book
+                  book={book}
+                  updateBookShelf={(book, shelf) => {
+                    updateBookShelf(book, shelf);
+                  }}
+                />
+              </li>,
+            )}
+          </ol>
+        </div>
+      </div>
+    );
+  }
 }
-export default BookShelfSearch
+export default BookShelfSearch;
