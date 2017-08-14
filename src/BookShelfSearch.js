@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Book from './Book'
 
@@ -12,18 +12,18 @@ class BookShelfSearch extends Component {
 
     render() {
 
-        const { books, updateBookShelf} = this.props;
+        const {books, updateBookShelf} = this.props;
 
         return (
             <div className="search-books-results">
                 <div className="bookshelf-books">
                     <ol className='books-grid'>
                         {books.map((book) => (
-                            <li key={book.id} >
+                            <li key={book.id}>
                                 <Book
                                     book={book}
-                                    updateBookShelf={(book,shelf) =>{
-                                        updateBookShelf(book,shelf);
+                                    updateBookShelf={(book, shelf) => {
+                                        updateBookShelf(book, shelf);
                                     }}
                                 />
                             </li>
