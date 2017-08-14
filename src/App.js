@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import BookShelf from './BookShelf';
 import SearchBooks from './SearchBooks';
 import './App.css';
-import * as BooksAPI from './APIs/BooksAPI';
+import * as BooksAPI from './BooksAPI';
 
 class App extends Component {
   state = {
