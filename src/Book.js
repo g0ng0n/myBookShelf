@@ -25,7 +25,8 @@ function Book(props) {
               )}
         <div className="book-shelf-changer">
           <select
-            onChange={event =>
+              value={props.book.shelf}
+              onChange={event =>
               props.updateBookShelf(props.book, event.target.value)}
           >
             <option value="none" disabled>
@@ -42,7 +43,9 @@ function Book(props) {
         {props.book.title}
       </div>
       <div className="book-authors">
-        {props.book.authors}
+              {props.book.authors ? props.book.authors.map(author =>
+                  author + '\r\n') : ''
+              }
       </div>
     </div>
   );

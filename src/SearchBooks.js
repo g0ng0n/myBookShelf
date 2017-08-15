@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import BookShelfSearch from './BookShelfSearch';
 
 class SearchBooks extends Component {
-  static PropTypes = {
-    books: PropTypes.array.isRequired,
-    searchInBookShelf: PropTypes.func.isRequired,
-    updateBookShelf: PropTypes.func.isRequired,
-  };
+
 
   render() {
     const { books, searchInBookShelf, updateBookShelf } = this.props;
@@ -25,7 +21,7 @@ class SearchBooks extends Component {
               placeholder="Search by title or author"
               onChange={event => {
                 let query =
-                  event.target.value !== undefined ? event.target.value : ' ';
+                  event.target.value !== undefined ? event.target.value : '';
                 searchInBookShelf(query);
               }}
             />
@@ -43,4 +39,11 @@ class SearchBooks extends Component {
     );
   }
 }
+
+SearchBooks.PropTypes = {
+    books: PropTypes.array.isRequired,
+    searchInBookShelf: PropTypes.func.isRequired,
+    updateBookShelf: PropTypes.func.isRequired,
+};
+
 export default SearchBooks;
