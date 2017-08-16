@@ -31,6 +31,19 @@ for you to use with your app.
 
 Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
 
+
+# Getting started
+
+## Setup
+
+Please run `npm install` or `yarn install` (depending on your preference) to 
+install all dependencies.
+
+## Running the app
+
+Please run `npm run start` or `yarn start` to Run the application. You 
+can then browse the application on your [localhost](http:://localhost:3000).
+
 ## Backend Server
 
 To simplify your development process, we've provided a backend server for you to develop against. The provided file [`BooksAPI.js`](src/BooksAPI.js) contains the methods you will need to perform necessary operations on the backend:
