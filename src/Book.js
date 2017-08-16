@@ -4,29 +4,27 @@ function Book(props) {
   return (
     <div className="book">
       <div className="book-top">
-          {props.book.imageLinks !== undefined ? (
-                  <div
-                      className="book-cover"
-                      style={{
-                          width: 128,
-                          height: 192,
-                          backgroundImage: 'url(' + props.book.imageLinks.thumbnail + ')',
-                      }}
-                  />
-              ) : (
-                  <div
-                      className="book-cover"
-                      style={{
-                          width: 128,
-                          height: 192,
-                          backgroundImage: 'url()',
-                      }}
-                  />
-              )}
+        {props.book.imageLinks !== undefined
+          ? <div
+              className="book-cover"
+              style={{
+                width: 128,
+                height: 192,
+                backgroundImage: 'url(' + props.book.imageLinks.thumbnail + ')',
+              }}
+            />
+          : <div
+              className="book-cover"
+              style={{
+                width: 128,
+                height: 192,
+                backgroundImage: 'url()',
+              }}
+            />}
         <div className="book-shelf-changer">
           <select
-              value={props.book.shelf}
-              onChange={event =>
+            value={props.book.shelf}
+            onChange={event =>
               props.updateBookShelf(props.book, event.target.value)}
           >
             <option value="none" disabled>
@@ -43,9 +41,9 @@ function Book(props) {
         {props.book.title}
       </div>
       <div className="book-authors">
-              {props.book.authors ? props.book.authors.map(author =>
-                  author + '\r\n') : ''
-              }
+        {props.book.authors
+          ? props.book.authors.map(author => author + '\r\n')
+          : ''}
       </div>
     </div>
   );

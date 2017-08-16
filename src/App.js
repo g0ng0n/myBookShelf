@@ -15,21 +15,20 @@ class App extends Component {
   };
 
   componentDidMount() {
-      this.getBooks();
+    this.getBooks();
   }
 
-  getBooks(){
-      BooksAPI.getAll().then(books => {
-          if (books !== undefined && books.length > 0) {
-              this.setState({ books: books });
-          }
-      });
+  getBooks() {
+    BooksAPI.getAll().then(books => {
+      if (books !== undefined && books.length > 0) {
+        this.setState({ books: books });
+      }
+    });
   }
 
   searchInBookShelf(query) {
     if (query && query !== '') {
       BooksAPI.search(query, 20).then(books => {
-
         if (books !== undefined && books.length > 0) {
           this.setState({ searchBooks: books });
         } else {
@@ -42,10 +41,9 @@ class App extends Component {
   }
 
   updateBookShelf(book, shelf) {
-
-      BooksAPI.update(book, shelf).then(() => {
-          this.getBooks();
-      });
+    BooksAPI.update(book, shelf).then(() => {
+      this.getBooks();
+    });
   }
 
   render() {
@@ -69,7 +67,7 @@ class App extends Component {
             exact
             path="/"
             render={() =>
-                <BookShelves
+              <BookShelves
                 books={this.state.books}
                 updateBookShelf={(book, shelf) => {
                   this.updateBookShelf(book, shelf);
