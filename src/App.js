@@ -20,11 +20,13 @@ class App extends Component {
   }
 
   searchInBookShelf(query) {
-    BooksAPI.search(query, 20).then(books => {
-      if (books !== undefined && books.length > 0) {
-        this.setState({ books: books });
+      if (query && query !== ""){
+          BooksAPI.search(query, 20).then(books => {
+              if (books !== undefined && books.length > 0) {
+                  this.setState({ books: books });
+              }
+          });
       }
-    });
   }
 
   updateBookShelf(book, shelf) {
