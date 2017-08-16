@@ -1,99 +1,83 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import BookShelf from './BookShelf';
+import { Switch } from 'react-router-dom';
+import BookShelves from './BookShelves';
+import NotFound from './NotFound';
 import SearchBooks from './SearchBooks';
 import './App.css';
 import * as BooksAPI from './BooksAPI';
 
 class App extends Component {
   state = {
+    searchBooks: [],
+
     books: [],
   };
 
   componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      if (books !== undefined && books.length > 0) {
-        this.setState({ books: books });
-      }
-    });
+      this.getBooks();
+  }
+
+  getBooks(){
+      BooksAPI.getAll().then(books => {
+          if (books !== undefined && books.length > 0) {
+              this.setState({ books: books });
+          }
+      });
   }
 
   searchInBookShelf(query) {
-      if (query && query !== ""){
-          BooksAPI.search(query, 20).then(books => {
-              if (books !== undefined && books.length > 0) {
-                  this.setState({ books: books });
-              }
-          });
-      }
+    if (query && query !== '') {
+      BooksAPI.search(query, 20).then(books => {
+
+        if (books !== undefined && books.length > 0) {
+          this.setState({ searchBooks: books });
+        } else {
+          if (books.error) {
+            this.setState({ searchBooks: [] });
+          }
+        }
+      });
+    }
   }
 
   updateBookShelf(book, shelf) {
-    BooksAPI.update(book, shelf).then(books => {
-      BooksAPI.getAll().then(books => {
-        if (books !== undefined && books.length > 0) {
-          this.setState({ books: books });
-        }
+
+      BooksAPI.update(book, shelf).then(() => {
+          this.getBooks();
       });
-    });
   }
 
   render() {
     return (
       <div className="app">
-        <Route
-          path="/search"
-          render={({ history }) =>
-            <SearchBooks
-              books={this.state.books}
-              searchInBookShelf={query => {
-                this.searchInBookShelf(query);
-              }}
-              updateBookShelf={(book, shelf) => {
-                this.updateBookShelf(book, shelf);
-              }}
-            />}
-        />
-        <Route
-          exact
-          path="/"
-          render={() =>
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <BookShelf
-                books={this.state.books}
-                shelfTitle={'Currently Reading'}
-                shelf={'currentlyReading'}
+        <Switch>
+          <Route
+            path="/search"
+            render={({ history }) =>
+              <SearchBooks
+                books={this.state.searchBooks}
+                searchInBookShelf={query => {
+                  this.searchInBookShelf(query);
+                }}
                 updateBookShelf={(book, shelf) => {
                   this.updateBookShelf(book, shelf);
                 }}
-              />
-              <BookShelf
+              />}
+          />
+          <Route
+            exact
+            path="/"
+            render={() =>
+                <BookShelves
                 books={this.state.books}
-                shelfTitle={'Want To Read'}
-                shelf={'wantToRead'}
                 updateBookShelf={(book, shelf) => {
                   this.updateBookShelf(book, shelf);
                 }}
-              />
-              <BookShelf
-                books={this.state.books}
-                shelfTitle={'Read'}
-                shelf={'read'}
-                updateBookShelf={(book, shelf) => {
-                  this.updateBookShelf(book, shelf);
-                }}
-              />
-              <div className="open-search">
-                <Link className="close-search" to="/search">
-                  Add a book
-                </Link>
-              </div>
-            </div>}
-        />
+              />}
+          />
+          <Route component={NotFound} />
+        </Switch>
       </div>
     );
   }
