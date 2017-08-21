@@ -30,7 +30,7 @@ class App extends Component {
     if (query && query !== '') {
       BooksAPI.search(query, 20).then(books => {
         if (books !== undefined && books.length > 0) {
-          this.setState({ searchBooks: books });
+          this.setState({ searchBooks: this.verifyBooks(books) });
         } else {
           if (books.error) {
             this.setState({ searchBooks: [] });
@@ -40,9 +40,26 @@ class App extends Component {
     }
   }
 
+  verifyBooks = booksFromSearch => {
+    const verifiedBooks = booksFromSearch.map(bookFromSearch => {
+      this.state.books.forEach(bookOnShelf => {
+        // check wether book is already on shelf
+        if (bookFromSearch.id === bookOnShelf.id) {
+          // if yes get the shelf data from BooksOnShelf
+          bookFromSearch.shelf = bookOnShelf.shelf;
+        }
+      });
+      return bookFromSearch;
+    });
+    return verifiedBooks;
+  };
+
   updateBookShelf(book, shelf) {
-    BooksAPI.update(book, shelf).then(() => {
-      this.getBooks();
+    BooksAPI.update(book, shelf).then(books => {
+      book.shelf = shelf;
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat([book]),
+      }));
     });
   }
 
@@ -54,7 +71,8 @@ class App extends Component {
             path="/search"
             render={({ history }) =>
               <SearchBooks
-                books={this.state.searchBooks}
+                books={this.state.books}
+                searchBooks={this.state.searchBooks}
                 searchInBookShelf={query => {
                   this.searchInBookShelf(query);
                 }}

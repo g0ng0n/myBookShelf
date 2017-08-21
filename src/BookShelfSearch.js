@@ -4,18 +4,18 @@ import Book from './Book';
 
 class BookShelfSearch extends Component {
   static PropTypes = {
-    books: PropTypes.array.isRequired,
+    searchBooks: PropTypes.array.isRequired,
     updateBookShelf: PropTypes.func.isRequired,
   };
 
   render() {
-    const { books, updateBookShelf } = this.props;
+    const { searchBooks, updateBookShelf } = this.props;
 
     return (
       <div className="search-books-results">
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {books.map(book =>
+            {searchBooks.map(book =>
               <li key={book.id}>
                 <Book
                   book={book}

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import BookShelfSearch from './BookShelfSearch';
 
 class SearchBooks extends Component {
-
-
   render() {
-    const { books, searchInBookShelf, updateBookShelf } = this.props;
+    const {
+      searchBooks,
+      books,
+      searchInBookShelf,
+      updateBookShelf,
+    } = this.props;
 
     return (
       <div className="search-books">
@@ -29,6 +32,7 @@ class SearchBooks extends Component {
         </div>
         <div className="search-books-results">
           <BookShelfSearch
+            searchBooks={searchBooks}
             books={books}
             updateBookShelf={(book, shelf) => {
               updateBookShelf(book, shelf);
@@ -41,9 +45,9 @@ class SearchBooks extends Component {
 }
 
 SearchBooks.PropTypes = {
-    books: PropTypes.array.isRequired,
-    searchInBookShelf: PropTypes.func.isRequired,
-    updateBookShelf: PropTypes.func.isRequired,
+  books: PropTypes.array.isRequired,
+  searchInBookShelf: PropTypes.func.isRequired,
+  updateBookShelf: PropTypes.func.isRequired,
 };
 
 export default SearchBooks;
